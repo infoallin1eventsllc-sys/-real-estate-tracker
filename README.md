@@ -1,47 +1,20 @@
-# RE Tracker — Real Estate Dashboard
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
 
-A full-stack real estate management tool for agents and investors.
+# Run and deploy your AI Studio app
 
-## Features
+This contains everything you need to run your app locally.
 
-- **Dashboard** — dual KPI panels for agent commission and investor portfolio
-- **Deal Pipeline** — kanban-style view across 6 deal stages with commission tracking
-- **Properties** — searchable property listing with status filters
-- **Clients** — buyer/seller CRM with deal history drilldown
-- **Investment Portfolio** — cap rate, NOI, and equity analytics per property
-- **Financial Summary** — YTD commission earned vs projected, plus portfolio returns
-- **AI Listing Writer** — generates professional property descriptions via Google Gemini
+View your app in AI Studio: https://ai.studio/apps/88ed147a-6612-40c7-ac17-c29fccceaf8b
 
-## Tech Stack
+## Run Locally
 
-- **Frontend**: React 19, TypeScript 5.5, Vite 6, Tailwind CSS v4, Framer Motion, Lucide React
-- **Backend**: Express 4, Node.js (TypeScript via tsx)
-- **AI**: Google Gemini 2.0 Flash (`@google/generative-ai`)
-- **Testing**: Vitest
+**Prerequisites:**  Node.js
 
-## Getting Started
 
-```bash
-npm install
-
-# Copy and fill in your Gemini API key
-echo "GEMINI_API_KEY=your_key_here" > .env
-
-# Run frontend + backend together
-npm run dev
-```
-
-The frontend runs on `http://localhost:5173` and proxies `/api` requests to the Express server at `http://localhost:3001`.
-
-## Environment Variables
-
-| Variable | Description |
-|---|---|
-| `GEMINI_API_KEY` | Google AI Studio API key (required for AI Listing Writer) |
-| `PORT` | Express server port (default: `3001`) |
-
-## Running Tests
-
-```bash
-npm test
-```
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`

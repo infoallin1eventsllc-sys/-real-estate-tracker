@@ -1,8 +1,9 @@
-import type { Deal, InvestmentProperty } from '../types';
+import type { Deal, Property } from '../types';
+
+// --- Deal / Commission ---
 
 export function commissionAmount(deal: Deal): number {
-  const base = deal.salePrice ?? deal.offerPrice ?? deal.listPrice;
-  return base * (deal.commissionRate / 100);
+  return deal.price * deal.commissionRate;
 }
 
 export function totalCommissionEarned(deals: Deal[]): number {
@@ -21,7 +22,7 @@ export function totalPipelineValue(deals: Deal[]): number {
   const active: Deal['stage'][] = ['Lead', 'Showing', 'Offer Made', 'Under Contract'];
   return deals
     .filter((d) => active.includes(d.stage))
-    .reduce((sum, d) => sum + d.listPrice, 0);
+    .reduce((sum, d) => sum + d.price, 0);
 }
 
 export function dealsByStage(deals: Deal[], stage: Deal['stage']): Deal[] {
@@ -33,41 +34,26 @@ export function conversionRate(deals: Deal[]): number {
   return (deals.filter((d) => d.stage === 'Closed').length / deals.length) * 100;
 }
 
-export function calcMonthlyExpenses(inv: InvestmentProperty): number {
-  const mgmtFee = inv.monthlyRent * (inv.managementFeeRate / 100);
-  return (
-    inv.mortgagePayment +
-    inv.monthlyTaxes +
-    inv.monthlyInsurance +
-    inv.monthlyMaintenance +
-    mgmtFee
-  );
+// --- Portfolio / Investment ---
+
+export function portfolioValue(properties: Property[]): number {
+  return properties.reduce((sum, p) => sum + (p.purchasePrice ?? p.price), 0);
 }
 
-export function calcMonthlyNOI(inv: InvestmentProperty): number {
-  return inv.monthlyRent - calcMonthlyExpenses(inv);
+export function totalMonthlyRent(properties: Property[]): number {
+  return properties.reduce((sum, p) => sum + (p.monthlyRent ?? 0), 0);
 }
 
-export function calcCapRate(inv: InvestmentProperty): number {
-  return ((calcMonthlyNOI(inv) * 12) / inv.currentValue) * 100;
+export function totalMonthlyNOI(properties: Property[]): number {
+  return properties.reduce((sum, p) => sum + (p.monthlyNOI ?? 0), 0);
 }
 
-export function calcEquity(inv: InvestmentProperty): number {
-  return inv.currentValue - inv.purchasePrice;
+export function totalEquityGain(properties: Property[]): number {
+  return properties.reduce((sum, p) => sum + (p.equityGain ?? 0), 0);
 }
 
-export function portfolioValue(investments: InvestmentProperty[]): number {
-  return investments.reduce((sum, inv) => sum + inv.currentValue, 0);
-}
-
-export function totalMonthlyRent(investments: InvestmentProperty[]): number {
-  return investments.reduce((sum, inv) => sum + inv.monthlyRent, 0);
-}
-
-export function totalMonthlyNOI(investments: InvestmentProperty[]): number {
-  return investments.reduce((sum, inv) => sum + calcMonthlyNOI(inv), 0);
-}
-
-export function totalEquityGain(investments: InvestmentProperty[]): number {
-  return investments.reduce((sum, inv) => sum + calcEquity(inv), 0);
+export function averageCapRate(properties: Property[]): number {
+  const props = properties.filter((p) => p.capRate !== undefined);
+  if (props.length === 0) return 0;
+  return props.reduce((sum, p) => sum + (p.capRate ?? 0), 0) / props.length;
 }
