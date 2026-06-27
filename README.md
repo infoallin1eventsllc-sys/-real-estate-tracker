@@ -1,4 +1,4 @@
-# RE Tracker — Real Estate Dashboard
+# RE racker — Real- Estate- tracker
 
 A full-stack real estate management tool for agents and investors.
 
